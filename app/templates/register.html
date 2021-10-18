@@ -5,7 +5,8 @@
 <h1>Register!</h1>
 
 
-    <form action="">
+    <form action="" method='post'>
+        {{ form.csrf_token }}
         <div class="form-control">
             <fieldset>
                 {{ form.username.label }}
@@ -20,6 +21,7 @@
                 {{ form.confirm_pass(class='form-control', placeholder='Confirm Password')}}
             </fieldset>
         </div>
+        {{ form.submit(class='btn btn-outline-success') }}
     </form>
 
 {% endblock %}
