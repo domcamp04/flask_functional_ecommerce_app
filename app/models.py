@@ -1,9 +1,13 @@
-from enum import unique
-from app import db
+from app import db, login
 from datetime import datetime
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
-class User(db.Model):
+@login.user_loader
+def get_user(user_id):
+    return User.query.get(user_id)
+
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
@@ -15,6 +19,10 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User|{self.username}>'
+
+    def check_password(self,password):
+        return check_password_hash(self.password, password)
+
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
