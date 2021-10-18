@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, url_for
 from app.forms import RegistrationForm
-from app.models import User
+from app.models import Product, User
 
 
 @app.route('/')
@@ -23,3 +23,15 @@ def register():
         return redirect(url_for('index'))
 
     return render_template('register.html', form=register_form)
+
+
+@app.route('/products')
+def products():
+    all_products = Product.query.all()
+    return render_template('products.html', products=all_products)
+
+
+@app.route('/products/<prod_id>')
+def product_detail(prod_id):
+    product = Product.query.get_or_404(prod_id)
+    return render_template('product_detail.html', product=product)
