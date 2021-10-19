@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
+<h1>{{ current_user.username }}'s Cart</h1>
 
-
-<h1 class="fw-bold">Hello {{ current_user.username }}!</h1>
 <div class="row">
     {% for p in products %}
     <div class="col-12 col-sm-6 col-md-4">
-        <div class="card border border-secondary" style="width: 25rem;">
+        <div class="card" style="width: 25rem;">
                 <img src="{{ p.image_url }}" class="card-img-top" alt="{{ p.name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ p.name }}</h5>
@@ -20,5 +20,4 @@
     {% endfor %}
 </div>
 
-
-{% endblock %}
+{% endblock content %}

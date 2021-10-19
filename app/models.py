@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    products = db.relationship('Product', secondary='cart')
 
     def __init__(self, username, password):
         self.username = username
@@ -30,6 +31,7 @@ class Product(db.Model):
     price = db.Column(db.Numeric(5,2), nullable=False)
     image_url = db.Column(db.String(255))
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    users = db.relationship('User', secondary='cart')
 
     def __init__(self, name, price, image_url=None):
         self.name = name
@@ -38,3 +40,9 @@ class Product(db.Model):
 
     def __repr__(self):
         return f'<Product | {self.name}>'
+
+
+class Cart(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)

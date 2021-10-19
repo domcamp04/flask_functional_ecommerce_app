@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% if current_user.is_authenticated %}
 <h1>Products</h1>
 
 <div class="row">
@@ -19,5 +19,7 @@
     </div>        
     {% endfor %}
 </div>
-
+{% else %}
+<h1>Welcome, please register using the link about to view products.</h1>
+{% endif %}
 {% endblock content %}
