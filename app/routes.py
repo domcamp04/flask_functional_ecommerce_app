@@ -1,9 +1,8 @@
-from flask_login.utils import login_required
 from app import app, db
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from app.forms import RegistrationForm, LoginForm
-from app.models import Product, User
+from app.models import Product, User, Cart
 
 
 @app.route('/')
@@ -53,7 +52,7 @@ def login():
         login_user(user)
         
         return redirect(url_for('index'))
-
+    flash ('Username or Password incorrect')
     return render_template('login.html', form=form)
 
 
@@ -77,3 +76,12 @@ def add_to_cart(prod_id):
     current_user.products.append(product)
     db.session.commit()
     return redirect(url_for('my_cart'))
+
+
+@app.route('/my-cart/<int:prod_id>/cart_item', methods=['POST'])
+@login_required
+def cart_delete(prod_id):
+    Cart.query.filter(Cart.id == prod_id).delete()
+    db.session.commit()
+    flash("Item has been removed", 'primary')
+    return redirect(url_for('index'))
